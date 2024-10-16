@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indiana Voter Turnout Maps</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Indiana Voter Turnout Comparison</h1>
+
+        <div class="year-selectors">
+            <div>
+                <label for="previous-year">Previous Year:</label>
+                <select id="previous-year">
+                    <option value="2020" selected>2020</option>
+                    <option value="2018">2018</option>
+                    <option value="2016">2016</option>
+                    <option value="2014">2014</option>
+                    <option value="2012">2012</option>
+                    <option value="2010">2010</option>
+                </select>
+            </div>
+            <div>
+                <label for="current-year">Current Year:</label>
+                <select id="current-year">
+                    <option value="2022" selected>2022</option>
+                    <option value="2020">2020</option>
+                    <option value="2018">2018</option>
+                    <option value="2016">2016</option>
+                    <option value="2014">2014</option>
+                    <option value="2012">2012</option>
+                    <option value="2010">2010</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div id="previous-year-map" class="map"></div>
+            <div class="legend">
+                <h3>Voter Turnout Legend</h3>
+
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #173e19;"></div>
+                    <span>> 80%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #205723;"></div>
+                    <span>> 70%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #29702d;"></div>
+                    <span>> 60%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #428a46;"></div>
+                    <span>> 50%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #6ca46f;"></div>
+                    <span>> 40%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #96be98;"></div>
+                    <span>> 30%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #c0d8c1;"></div>
+                    <span>under 30%</span>
+                </div>
+
+            </div>
+            <div id="current-year-map" class="map"></div>
+        </div>
+
+        <div class="info-container">
+            <div id="previous-year-details" class="info-box">
+                <h2>Select a County</h2>
+            </div>
+            <div id="percent-change-details" class="info-box">
+                <h2>Select a County</h2>
+            </div>
+            <div id="current-year-details" class="info-box">
+                <h2>Select a County</h2>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
