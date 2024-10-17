@@ -1,6 +1,6 @@
 let currentMap, previousMap;
 let voterData = [];
-let selectedCounty = null;
+let selectedCounty = "Indiana"; // Default county is Indiana
 let currentHighlightedMarker = null;
 
 // Fetch voter data from the JSON file
@@ -67,7 +67,7 @@ function displayCountyInfo(countyName) {
     // Display current year data
     const currentInfoDiv = document.getElementById('current-year-details');
     currentInfoDiv.innerHTML = `
-        <h3>${countyName} County: ${currentYear}</h3><br>
+        <h3>${countyName === "Indiana" ? 'Indiana' : `${countyName} county`}: ${currentYear}</h3><br>
         <strong>Registered Voters:</strong> ${currentData["Registered Voters"]}<br>
         <strong>Voters Voting:</strong> ${currentData["Voters Voting"]}<br>
         <strong>Turnout (%):</strong> ${currentData["Turnout (%)"]}<br>
@@ -79,9 +79,9 @@ function displayCountyInfo(countyName) {
     // Display previous year data
     const previousInfoDiv = document.getElementById('previous-year-details');
     previousInfoDiv.innerHTML = `
-        <h3>${countyName} County: ${previousYear}</h3><br>
-       <strong> Registered Voters:</strong> ${previousData["Registered Voters"]}<br>
-       <strong> Voters Voting:</strong> ${previousData["Voters Voting"]}<br>
+        <h3>${countyName === "Indiana" ? 'Indiana' : `${countyName} county`}: ${previousYear}</h3><br>
+        <strong>Registered Voters:</strong> ${previousData["Registered Voters"]}<br>
+        <strong>Voters Voting:</strong> ${previousData["Voters Voting"]}<br>
         <strong>Turnout (%):</strong> ${previousData["Turnout (%)"]}<br>
         <strong>Election Day Vote:</strong> ${previousData["Election Day Vote"]}<br>
         <strong>Absentee:</strong> ${previousData["Absentee"]}<br>
@@ -113,6 +113,12 @@ function displayCountyInfo(countyName) {
             <strong>Absentee Percent Change:</strong> ${absenteePercentPercentChange}%<br>
         `;
     }
+}
+
+// Function to reset to state view if the year is changed
+function resetToStateView() {
+    selectedCounty = "Indiana";  // Reset to Indiana by default
+    displayCountyInfo("Indiana");
 }
 
 // Add click functionality for counties
@@ -180,6 +186,8 @@ function highlightCounty(countyName) {
 function updateMap() {
     const currentYear = document.getElementById('current-year').value;
     const previousYear = document.getElementById('previous-year').value;
+
+    resetToStateView();  // Reset to state info when year changes
 
     // Update current year map
     currentMap.eachLayer(layer => {
