@@ -90,11 +90,11 @@ function displayCountyInfo(countyName) {
 
     // Calculate and display percent change if both data points exist
     if (currentData && previousData) {
-        const registeredVotersChange = parseInt(currentData["Registered Voters"].replace(/,/g, '')) - parseInt(previousData["Registered Voters"].replace(/,/g, ''));
-        const votersVotingChange = parseInt(currentData["Voters Voting"].replace(/,/g, '')) - parseInt(previousData["Voters Voting"].replace(/,/g, ''));
+        const registeredVotersChange = Intl.NumberFormat().format(parseInt(currentData["Registered Voters"].replace(/,/g, '')) - parseInt(previousData["Registered Voters"].replace(/,/g, '')));
+        const votersVotingChange = Intl.NumberFormat().format(parseInt(currentData["Voters Voting"].replace(/,/g, '')) - parseInt(previousData["Voters Voting"].replace(/,/g, '')));
         //const turnoutChange = (parseFloat(currentData["Turnout (%)"]) - parseFloat(previousData["Turnout (%)"])).toFixed(0);
-        const electionDayVoteChange = parseInt(currentData["Election Day Vote"].replace(/,/g, '')) - parseInt(previousData["Election Day Vote"].replace(/,/g, ''));
-        let absenteeChange = parseInt(currentData["Absentee"].replace(/,/g, '')) - parseInt(previousData["Absentee"].replace(/,/g, ''));
+        const electionDayVoteChange = Intl.NumberFormat().format(parseInt(currentData["Election Day Vote"].replace(/,/g, '')) - parseInt(previousData["Election Day Vote"].replace(/,/g, '')));
+        let absenteeChange = Intl.NumberFormat().format(parseInt(currentData["Absentee"].replace(/,/g, '')) - parseInt(previousData["Absentee"].replace(/,/g, '')));
         //const absenteePercent = (parseFloat(currentData["Absentee (%)"]) - parseFloat(previousData["Absentee (%)"])).toFixed(0);
         const registeredVotersPercentChange = (((parseInt(currentData["Registered Voters"].replace(/,/g, '')) / parseInt(previousData["Registered Voters"].replace(/,/g, ''))) - 1) * 100).toFixed(2);
         const votersVotingPercentChange = (((parseInt(currentData["Voters Voting"].replace(/,/g, '')) / parseInt(previousData["Voters Voting"].replace(/,/g, ''))) - 1) * 100).toFixed(2);
