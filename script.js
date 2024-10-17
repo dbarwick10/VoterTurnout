@@ -92,10 +92,10 @@ function displayCountyInfo(countyName) {
     if (currentData && previousData) {
         const registeredVotersChange = parseInt(currentData["Registered Voters"].replace(/,/g, '')) - parseInt(previousData["Registered Voters"].replace(/,/g, ''));
         const votersVotingChange = parseInt(currentData["Voters Voting"].replace(/,/g, '')) - parseInt(previousData["Voters Voting"].replace(/,/g, ''));
-        const turnoutChange = (parseFloat(currentData["Turnout (%)"]) - parseFloat(previousData["Turnout (%)"])).toFixed(0);
+        //const turnoutChange = (parseFloat(currentData["Turnout (%)"]) - parseFloat(previousData["Turnout (%)"])).toFixed(0);
         const electionDayVoteChange = parseInt(currentData["Election Day Vote"].replace(/,/g, '')) - parseInt(previousData["Election Day Vote"].replace(/,/g, ''));
-        const absenteeChange = parseInt(currentData["Absentee"]) - parseInt(previousData["Absentee"]);
-        const absenteePercent = (parseFloat(currentData["Absentee (%)"]) - parseFloat(previousData["Absentee (%)"])).toFixed(0);
+        let absenteeChange = parseInt(currentData["Absentee"].replace(/,/g, '')) - parseInt(previousData["Absentee"].replace(/,/g, ''));
+        //const absenteePercent = (parseFloat(currentData["Absentee (%)"]) - parseFloat(previousData["Absentee (%)"])).toFixed(0);
         const registeredVotersPercentChange = (((parseInt(currentData["Registered Voters"].replace(/,/g, '')) / parseInt(previousData["Registered Voters"].replace(/,/g, ''))) - 1) * 100).toFixed(2);
         const votersVotingPercentChange = (((parseInt(currentData["Voters Voting"].replace(/,/g, '')) / parseInt(previousData["Voters Voting"].replace(/,/g, ''))) - 1) * 100).toFixed(2);
         const turnoutPercentChange = (((parseInt(currentData["Turnout (%)"].replace(/,/g, '')) / parseInt(previousData["Turnout (%)"].replace(/,/g, ''))) - 1) * 100).toFixed(2);
