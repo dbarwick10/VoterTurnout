@@ -75,7 +75,7 @@ h1 {
 .info-container {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    gap: 15px;
 }
 
 /* Set the flex ratio so that the percent-change-details box is larger */
@@ -95,8 +95,8 @@ h1 {
 
 #percent-change-details strong {
     display: block;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
+    font-size: 1rem;
+    margin-bottom: 1px;
     color: #FF6347;
 }
 
@@ -118,11 +118,21 @@ h2 {
     padding-bottom: 5px;
 }
 
+.info-box h3 {
+    font-size: 1.3srem;
+    border-bottom: 2px solid #f0f2f5;
+    color: #007BFF;
+}
+
+#percent-change-details h3 {
+    color: #FF6347;
+}
+
 .info-box strong {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #007BFF;
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 1px;
     font-weight: 500;
 }
 

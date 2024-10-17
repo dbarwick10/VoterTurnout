@@ -67,25 +67,25 @@ function displayCountyInfo(countyName) {
     // Display current year data
     const currentInfoDiv = document.getElementById('current-year-details');
     currentInfoDiv.innerHTML = `
-        <strong>${countyName} County: ${currentYear}</strong><br>
-        Registered Voters: ${currentData["Registered Voters"]}<br>
-        Voters Voting: ${currentData["Voters Voting"]}<br>
-        Turnout (%): ${currentData["Turnout (%)"]}<br>
-        Election Day Vote: ${currentData["Election Day Vote"]}<br>
-        Absentee: ${currentData["Absentee"]}<br>
-        Absentee (%): ${currentData["Absentee (%)"]}
+        <h3>${countyName} County: ${currentYear}</h3><br>
+        <strong>Registered Voters:</strong> ${currentData["Registered Voters"]}<br>
+        <strong>Voters Voting:</strong> ${currentData["Voters Voting"]}<br>
+        <strong>Turnout (%):</strong> ${currentData["Turnout (%)"]}<br>
+        <strong>Election Day Vote:</strong> ${currentData["Election Day Vote"]}<br>
+        <strong>Absentee:</strong> ${currentData["Absentee"]}<br>
+        <strong>Absentee (%):</strong> ${currentData["Absentee (%)"]}
     `;
 
     // Display previous year data
     const previousInfoDiv = document.getElementById('previous-year-details');
     previousInfoDiv.innerHTML = `
-        <strong>${countyName} County: ${previousYear}</strong><br>
-        Registered Voters: ${previousData["Registered Voters"]}<br>
-        Voters Voting: ${previousData["Voters Voting"]}<br>
-        Turnout (%): ${previousData["Turnout (%)"]}<br>
-        Election Day Vote: ${previousData["Election Day Vote"]}<br>
-        Absentee: ${previousData["Absentee"]}<br>
-        Absentee (%): ${previousData["Absentee (%)"]}
+        <h3>${countyName} County: ${previousYear}</h3><br>
+       <strong> Registered Voters:</strong> ${previousData["Registered Voters"]}<br>
+       <strong> Voters Voting:</strong> ${previousData["Voters Voting"]}<br>
+        <strong>Turnout (%):</strong> ${previousData["Turnout (%)"]}<br>
+        <strong>Election Day Vote:</strong> ${previousData["Election Day Vote"]}<br>
+        <strong>Absentee:</strong> ${previousData["Absentee"]}<br>
+        <strong>Absentee (%):</strong> ${previousData["Absentee (%)"]}
     `;
 
     // Calculate and display percent change if both data points exist
@@ -104,13 +104,13 @@ function displayCountyInfo(countyName) {
         const absenteePercentPercentChange = (((parseInt(currentData["Absentee (%)"].replace(/,/g, '')) / parseInt(previousData["Absentee (%)"].replace(/,/g, ''))) - 1) * 100).toFixed(2);
 
         document.getElementById('percent-change-details').innerHTML = `
-            <strong>Change from ${previousYear} to ${currentYear}</strong><br>
-            Registered Voters Difference (Percent Change): ${registeredVotersChange} (${registeredVotersPercentChange}%)<br>
-            Voters Voting (Percent Change): ${votersVotingChange} (${votersVotingPercentChange}%)<br>
-            Turnout Percent Change: ${turnoutPercentChange}%<br>
-            Election Day Vote (Percent Change): ${electionDayVoteChange} (${electionDayVotePercentChange}%)<br>
-            Absentee (Percent Change): ${absenteeChange} (${absenteePercentChange}%) <br>
-            Absentee Percent Change: ${absenteePercentPercentChange}%<br>
+            <h3>Change from ${previousYear} to ${currentYear}</h3><br>
+            <strong>Registered Voters Difference (Percent Change):</strong> ${registeredVotersChange} (${registeredVotersPercentChange}%)<br>
+            <strong>Voters Voting (Percent Change):</strong> ${votersVotingChange} (${votersVotingPercentChange}%)<br>
+            <strong>Turnout Percent Change:</strong> ${turnoutPercentChange}%<br>
+            <strong>Election Day Vote (Percent Change):</strong> ${electionDayVoteChange} (${electionDayVotePercentChange}%)<br>
+            <strong>Absentee (Percent Change):</strong> ${absenteeChange} (${absenteePercentChange}%) <br>
+            <strong>Absentee Percent Change:</strong> ${absenteePercentPercentChange}%<br>
         `;
     }
 }

@@ -20,36 +20,12 @@
     <div class="container">
         <h1>Indiana Voter Turnout Comparison</h1>
 
-        <div class="year-selectors">
-            <div>
-                <label for="previous-year">Previous Year:</label>
-                <select id="previous-year">
-                    <option value="2020" selected>2020</option>
-                    <option value="2018">2018</option>
-                    <option value="2016">2016</option>
-                    <option value="2014">2014</option>
-                    <option value="2012">2012</option>
-                    <option value="2010">2010</option>
-                </select>
-            </div>
-            <div>
-                <label for="current-year">Current Year:</label>
-                <select id="current-year">
-                    <option value="2022" selected>2022</option>
-                    <option value="2020">2020</option>
-                    <option value="2018">2018</option>
-                    <option value="2016">2016</option>
-                    <option value="2014">2014</option>
-                    <option value="2012">2012</option>
-                    <option value="2010">2010</option>
-                </select>
-            </div>
-        </div>
+        
 
         <div class="map-container">
             <div id="previous-year-map" class="map"></div>
             <div class="legend">
-                <h3>Voter Turnout Legend</h3>
+                <h3>Voter Turnout</h3>
 
                 <div class="legend-item">
                     <div class="color-box" style="background-color: #173e19;"></div>
@@ -84,6 +60,32 @@
             <div id="current-year-map" class="map"></div>
         </div>
 
+        <div class="year-selectors">
+            <div>
+                <label for="previous-year">Previous Year:</label>
+                <select id="previous-year">
+                    <option value="2020" selected>2020</option>
+                    <option value="2018">2018</option>
+                    <option value="2016">2016</option>
+                    <option value="2014">2014</option>
+                    <option value="2012">2012</option>
+                    <option value="2010">2010</option>
+                </select>
+            </div>
+            <div>
+                <label for="current-year">Current Year:</label>
+                <select id="current-year">
+                    <option value="2022" selected>2022</option>
+                    <option value="2020">2020</option>
+                    <option value="2018">2018</option>
+                    <option value="2016">2016</option>
+                    <option value="2014">2014</option>
+                    <option value="2012">2012</option>
+                    <option value="2010">2010</option>
+                </select>
+            </div>
+        </div>
+        
         <div class="info-container">
             <div id="previous-year-details" class="info-box">
                 <h2>Select a County</h2>
