@@ -1,6 +1,8 @@
 let currentMap, previousMap;
 let voterData = [];
 let selectedCounty = "Indiana"; // Default county is Indiana
+let selectedElectionTypeCurrent = "General"; // For current year
+let selectedElectionTypePrevious = "General"; // For previous year
 let currentHighlightedMarker = null;
 
 // Fetch voter data from the JSON file
@@ -51,9 +53,9 @@ function getColor(turnout) {
     return '#c0d8c1'; // Very light green
 }
 
-// Get county data by year and county name
-function getCountyData(year, countyName) {
-    return voterData.find(record => record.Year == year && record.County === countyName);
+// Get county data by year, county name, and election type
+function getCountyData(year, countyName, electionType) {
+    return voterData.find(record => record.Year == year && record.County === countyName && record["Election Type"] === electionType);
 }
 
 // Display the county information in the info box
@@ -61,31 +63,40 @@ function displayCountyInfo(countyName) {
     const currentYear = document.getElementById('current-year').value;
     const previousYear = document.getElementById('previous-year').value;
 
-    const currentData = getCountyData(currentYear, countyName);
-    const previousData = getCountyData(previousYear, countyName);
+    // Get current and previous data for the selected election type
+    const currentData = getCountyData(currentYear, countyName, selectedElectionTypeCurrent);
+    const previousData = getCountyData(previousYear, countyName, selectedElectionTypePrevious);
 
     // Display current year data
     const currentInfoDiv = document.getElementById('current-year-details');
     currentInfoDiv.innerHTML = `
-        <h3>${countyName === "Indiana" ? 'Indiana' : `${countyName} county`}: ${currentYear}</h3><br>
-        <strong>Registered Voters:</strong> ${currentData["Registered Voters"]}<br>
-        <strong>Voters Voting:</strong> ${currentData["Voters Voting"]}<br>
-        <strong>Turnout (%):</strong> ${currentData["Turnout (%)"]}<br>
-        <strong>Election Day Vote:</strong> ${currentData["Election Day Vote"]}<br>
-        <strong>Absentee:</strong> ${currentData["Absentee"]}<br>
-        <strong>Absentee (%):</strong> ${currentData["Absentee (%)"]}
+        <h3>${countyName === "Indiana" ? 'Indiana' : `${countyName} county`}: ${currentYear}
+        <div class="button-container">
+        <button id="current-general-btn" class="toggle-button ${selectedElectionTypeCurrent === 'General' ? 'selected' : ''}">General</button>
+        <button id="current-primary-btn" class="toggle-button ${selectedElectionTypeCurrent === 'Primary' ? 'selected' : ''}">Primary</button>
+        </div></h3><br>
+        <strong>Registered Voters:</strong> ${currentData ? currentData["Registered Voters"] : 'N/A'}<br>
+        <strong>Voters Voting:</strong> ${currentData ? currentData["Voters Voting"] : 'N/A'}<br>
+        <strong>Turnout (%):</strong> ${currentData ? currentData["Turnout (%)"] : 'N/A'}<br>
+        <strong>Election Day Vote:</strong> ${currentData ? currentData["Election Day Vote"] : 'N/A'}<br>
+        <strong>Absentee:</strong> ${currentData ? currentData["Absentee"] : 'N/A'}<br>
+        <strong>Absentee (%):</strong> ${currentData ? currentData["Absentee (%)"] : 'N/A'}
     `;
 
     // Display previous year data
     const previousInfoDiv = document.getElementById('previous-year-details');
     previousInfoDiv.innerHTML = `
-        <h3>${countyName === "Indiana" ? 'Indiana' : `${countyName} county`}: ${previousYear}</h3><br>
-        <strong>Registered Voters:</strong> ${previousData["Registered Voters"]}<br>
-        <strong>Voters Voting:</strong> ${previousData["Voters Voting"]}<br>
-        <strong>Turnout (%):</strong> ${previousData["Turnout (%)"]}<br>
-        <strong>Election Day Vote:</strong> ${previousData["Election Day Vote"]}<br>
-        <strong>Absentee:</strong> ${previousData["Absentee"]}<br>
-        <strong>Absentee (%):</strong> ${previousData["Absentee (%)"]}
+        <h3>${countyName === "Indiana" ? 'Indiana' : `${countyName} county`}: ${previousYear}
+        <div class="button-container">
+        <button id="previous-general-btn" class="toggle-button ${selectedElectionTypePrevious === 'General' ? 'selected' : ''}">General</button>
+        <button id="previous-primary-btn" class="toggle-button ${selectedElectionTypePrevious === 'Primary' ? 'selected' : ''}">Primary</button>
+        </div></h3><br>
+        <strong>Registered Voters:</strong> ${previousData ? previousData["Registered Voters"] : 'N/A'}<br>
+        <strong>Voters Voting:</strong> ${previousData ? previousData["Voters Voting"] : 'N/A'}<br>
+        <strong>Turnout (%):</strong> ${previousData ? previousData["Turnout (%)"] : 'N/A'}<br>
+        <strong>Election Day Vote:</strong> ${previousData ? previousData["Election Day Vote"] : 'N/A'}<br>
+        <strong>Absentee:</strong> ${previousData ? previousData["Absentee"] : 'N/A'}<br>
+        <strong>Absentee (%):</strong> ${previousData ? previousData["Absentee (%)"] : 'N/A'}
     `;
 
     // Calculate and display percent change if both data points exist
@@ -104,15 +115,38 @@ function displayCountyInfo(countyName) {
         const absenteePercentPercentChange = (((parseInt(currentData["Absentee (%)"].replace(/,/g, '')) / parseInt(previousData["Absentee (%)"].replace(/,/g, ''))) - 1) * 100).toFixed(2);
 
         document.getElementById('percent-change-details').innerHTML = `
-            <h3>Change from ${previousYear} to ${currentYear}</h3><br>
-            <strong>Registered Voters Difference (Percent Change):</strong> ${registeredVotersChange} (${registeredVotersPercentChange}%)<br>
+            <h3>${countyName === "Indiana" ? 'Indiana' : `${countyName} county`}<br>
+            ${previousYear} ${selectedElectionTypePrevious} to ${currentYear} ${selectedElectionTypeCurrent}</h3><br>
+            <strong>Registered Voters (Percent Change):</strong> ${registeredVotersChange} (${registeredVotersPercentChange}%)<br>
             <strong>Voters Voting (Percent Change):</strong> ${votersVotingChange} (${votersVotingPercentChange}%)<br>
-            <strong>Turnout Percent Change:</strong> ${turnoutPercentChange}%<br>
+            <strong>Turnout Percent:</strong> ${turnoutPercentChange}%<br>
             <strong>Election Day Vote (Percent Change):</strong> ${electionDayVoteChange} (${electionDayVotePercentChange}%)<br>
             <strong>Absentee (Percent Change):</strong> ${absenteeChange} (${absenteePercentChange}%) <br>
             <strong>Absentee Percent Change:</strong> ${absenteePercentPercentChange}%<br>
         `;
     }
+
+    // Attach event listeners to the buttons for current year data
+    document.getElementById('current-general-btn').addEventListener('click', () => {
+        selectedElectionTypeCurrent = "General";
+        displayCountyInfo(selectedCounty);  // Refresh the info box for current year
+    });
+
+    document.getElementById('current-primary-btn').addEventListener('click', () => {
+        selectedElectionTypeCurrent = "Primary";
+        displayCountyInfo(selectedCounty);  // Refresh the info box for current year
+    });
+
+    // Attach event listeners to the buttons for previous year data
+    document.getElementById('previous-general-btn').addEventListener('click', () => {
+        selectedElectionTypePrevious = "General";
+        displayCountyInfo(selectedCounty);  // Refresh the info box for previous year
+    });
+
+    document.getElementById('previous-primary-btn').addEventListener('click', () => {
+        selectedElectionTypePrevious = "Primary";
+        displayCountyInfo(selectedCounty);  // Refresh the info box for previous year
+    });
 }
 
 // Function to reset to state view if the year is changed
@@ -220,8 +254,9 @@ document.getElementById('current-year').addEventListener('change', updateMap);
 document.getElementById('previous-year').addEventListener('change', updateMap);
 
 // Initialize everything
-fetchVoterData().then(() => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchVoterData();
     initMaps();
     addCountyClickFunctionality();
-    updateMap();  // Set initial state
+    resetToStateView();
 });

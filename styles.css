@@ -88,11 +88,6 @@ h1 {
     transition: transform 0.3s ease;
 }
 
-#percent-change-details {
-    flex: 2;  /* Make this box take up more space */
-    text-align: center;
-}
-
 #percent-change-details strong {
     display: block;
     font-size: 1rem;
@@ -119,9 +114,15 @@ h2 {
 }
 
 .info-box h3 {
-    font-size: 1.3srem;
+    font-size: 1.3rem;
     border-bottom: 2px solid #f0f2f5;
     color: #007BFF;
+}
+
+#percent-change-details h3{
+    flex: 2;  /* Make this box take up more space */
+    text-align: center;
+    padding-bottom: 8px;
 }
 
 #percent-change-details h3 {
@@ -142,6 +143,45 @@ h2 {
     margin-bottom: 8px;
     line-height: 1.6;
 }
+
+.button-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: right; /* Center buttons within the container */
+}
+
+.toggle-button {
+    padding: 5px 10px;
+    background-color: #007bff41; /* Default background color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-right: 10px; /* Space between buttons */
+    font-size: .6rem; /* Font size for readability */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.toggle-button:hover {
+    background-color: #007bffac; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.toggle-button.selected {
+    background-color: #007BFF; /* Blue color when selected */
+}
+
+.toggle-button.selected:hover {
+    background-color: #006bdd; /* Darker blue when selected and hovered */
+}
+
+.info-header {
+    display: flex; /* Use flexbox layout */
+    align-items: center; /* Align items vertically in the center */
+    justify-content: space-between; /* Space between the title and buttons */
+    margin-bottom: 10px; /* Add some space below the header */
+}
+
 
 @media (max-width: 768px) {
     .map-container {
