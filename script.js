@@ -169,21 +169,25 @@ function displayCountyInfo(countyName) {
     // Attach event listeners to the buttons
     document.getElementById('current-general-btn').addEventListener('click', () => {
         selectedElectionTypeCurrent = "General";
+        updateMap();
         displayCountyInfo(selectedCounty);
     });
 
     document.getElementById('current-primary-btn').addEventListener('click', () => {
         selectedElectionTypeCurrent = "Primary";
+        updateMap();
         displayCountyInfo(selectedCounty);
     });
 
     document.getElementById('previous-general-btn').addEventListener('click', () => {
         selectedElectionTypePrevious = "General";
+        updateMap();
         displayCountyInfo(selectedCounty);
     });
 
     document.getElementById('previous-primary-btn').addEventListener('click', () => {
         selectedElectionTypePrevious = "Primary";
+        updateMap();
         displayCountyInfo(selectedCounty);
     });
 }
