@@ -201,14 +201,13 @@ function highlightCounty(countyName) {
     }
 
     // Redraw maps with highlighted county
-    function updateCountyStyle(map) {
+    function updateCountyStyle(map, year, electionType) {
         map.eachLayer(layer => {
             if (layer instanceof L.GeoJSON) {
                 layer.setStyle(function(feature) {
                     const currentName = feature.properties.name;
                     const isSelectedCounty = currentName === countyName;
-                    const currentYear = document.getElementById('current-year').value;
-                    const countyData = getCountyData(currentYear, currentName, selectedElectionTypeCurrent);
+                    const countyData = getCountyData(year, currentName, electionType);
 
                     return {
                         fillColor: countyData ? getColor(countyData["Turnout (%)"]) : '#c0d8c1',
@@ -221,8 +220,11 @@ function highlightCounty(countyName) {
         });
     }
 
-    updateCountyStyle(currentMap);
-    updateCountyStyle(previousMap);
+    const currentYear = document.getElementById('current-year').value;
+    const previousYear = document.getElementById('previous-year').value;
+
+    updateCountyStyle(currentMap, currentYear, selectedElectionTypeCurrent);
+    updateCountyStyle(previousMap, previousYear, selectedElectionTypePrevious);
 
     selectedCounty = countyName;
     displayCountyInfo(countyName);
