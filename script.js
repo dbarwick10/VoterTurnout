@@ -253,13 +253,13 @@ function updateMap() {
             style: function(feature) {
                 const countyName = feature.properties.name;
                 const countyData = getCountyData(year, countyName, electionType);
+                const isSelectedCounty = countyName === selectedCounty;
 
                 return {
                     fillColor: countyData ? getColor(countyData["Turnout (%)"]) : '#c0d8c1',
-                    weight: 1,
-                    opacity: 1,
-                    color: 'white',
-                    fillOpacity: 0.7
+                    weight: isSelectedCounty ? 3 : 1,
+                    color: isSelectedCounty ? '#ffff00' : 'white',
+                    fillOpacity: isSelectedCounty ? 0.9 : 0.7
                 };
             },
             onEachFeature: function(feature, layer) {
@@ -273,9 +273,8 @@ function updateMap() {
     addCountyBoundaries(currentMap, currentYear, selectedElectionTypeCurrent);
     addCountyBoundaries(previousMap, previousYear, selectedElectionTypePrevious);
 
-    // Reset to state view
-    selectedCounty = "Indiana";
-    displayCountyInfo("Indiana");
+    // Keep the selected county's information displayed
+    displayCountyInfo(selectedCounty);
 }
 
 // Initialize everything
