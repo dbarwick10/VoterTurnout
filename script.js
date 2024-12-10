@@ -48,7 +48,12 @@ function initMaps() {
         center: [39.8, -86.1349],
         zoom: 7,
         zoomControl: false,
-        scrollWheelZoom: false
+        scrollWheelZoom: false,
+        dragging: false,
+        touchZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false
     });
 
     // Previous Year Map
@@ -56,7 +61,12 @@ function initMaps() {
         center: [39.8, -86.1349],
         zoom: 7,
         zoomControl: false,
-        scrollWheelZoom: false
+        scrollWheelZoom: false,
+        dragging: false,
+        touchZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false
     });
 
     // Add tile layer to both maps
@@ -67,6 +77,17 @@ function initMaps() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(previousMap);
+
+    // Disable any touch events or drag interactions
+    currentMap.touchZoom.disable();
+    currentMap.doubleClickZoom.disable();
+    currentMap.boxZoom.disable();
+    currentMap.keyboard.disable();
+
+    previousMap.touchZoom.disable();
+    previousMap.doubleClickZoom.disable();
+    previousMap.boxZoom.disable();
+    previousMap.keyboard.disable();
 
     // Function to add county boundaries to a map
     function addCountyBoundaries(map, year, electionType) {
