@@ -7,9 +7,9 @@ let selectedCountyFIPS = null;
 
 // --- Helper function to get a single record from ICPSR data ---
 function getNationalRecord(fipsCode, year) {
-    return nationalData.find(r =>
-        String(r.STCOFIPS10).padStart(5, '0') === fipsCode &&
-        String(r.YEAR) === String(year)
+    return icpsrData.find(record => 
+        String(record.STCOFIPS10).padStart(5, '0') === String(fipsCode) && 
+        String(record.YEAR) === String(year)
     );
 }
 
