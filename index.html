@@ -5,21 +5,29 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQK9DK4VW7"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag( ){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-ZQK9DK4VW7');
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indiana Voter Turnout Maps</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>USA and Indiana Voter Turnout Maps</title>
+    
+    <link rel="stylesheet" href="/VoterTurnout/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+
 </head>
 <body>
     <div class="container">
-        <h1>Indiana Voter Turnout Comparison</h1>
+        <h1>USA and Indiana Voter Turnout Comparison</h1>
 
+        <h2>USA County-Level Turnout (2022 )</h2>
+        <div id="usa-map" class="map-container" style="height: 600px; margin-bottom: 40px;">
+        
+        </div>
+
+        <h2>Indiana Voter Turnout Comparison</h2>
         <div class="map-container">
             <div id="previous-year-map" class="map"></div>
             <div class="legend">
@@ -72,7 +80,8 @@
                     <option value="2010">2010</option>
                 </select>
             </div>
-            <div class="instructions">Select a County for more info <br>
+            <div class="instructions">Select a County for more info   
+
             Click the same county again to go back to the State level</div>
             <div>
                 <label for="current-year">Current Year:</label>
@@ -111,7 +120,8 @@
             </div>
         </div>
         <div>
-            <h2><br>Indiana Voter Turnout Maps</h2>
+            <h2>  
+Indiana Voter Turnout Maps</h2>
             <p>These maps show the voter turnout for the general and primary elections in Indiana for the selected years. The darker the shade of green, the higher the voter turnout. Click on a county to see more information about the voter turnout for that county.</p>
             <p>Source: <a href="https://indianavoters.in.gov/ENRHistorical/ElectionResults">Indiana Secretary of State</a></p>
             <p>Questions? <a href="mailto:voterturnoutinfo@gmail.com">email us</a></p>

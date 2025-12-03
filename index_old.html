@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQK9DK4VW7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZQK9DK4VW7');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indiana Voter Turnout Maps</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Indiana Voter Turnout Comparison</h1>
+
+        <div class="map-container">
+            <div id="previous-year-map" class="map"></div>
+            <div class="legend">
+                <h3>Voter Turnout</h3>
+
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #173e19;"></div>
+                    <span>> 80%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #205723;"></div>
+                    <span>> 70%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #29702d;"></div>
+                    <span>> 60%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #428a46;"></div>
+                    <span>> 50%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #6ca46f;"></div>
+                    <span>> 40%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #96be98;"></div>
+                    <span>> 30%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #c0d8c1;"></div>
+                    <span>under 30%</span>
+                </div>
+
+            </div>
+            <div id="current-year-map" class="map"></div>
+        </div>
+
+        <div class="year-selectors">
+            <div>
+                <label for="previous-year">Previous Year:</label>
+                <select id="previous-year">
+                    <option value="2024">2024</option>
+                    <option value="2022" selected>2022</option>
+                    <option value="2020">2020</option>
+                    <option value="2018">2018</option>
+                    <option value="2016">2016</option>
+                    <option value="2014">2014</option>
+                    <option value="2012">2012</option>
+                    <option value="2010">2010</option>
+                </select>
+            </div>
+            <div class="instructions">Select a County for more info <br>
+            Click the same county again to go back to the State level</div>
+            <div>
+                <label for="current-year">Current Year:</label>
+                <select id="current-year">
+                    <option value="2024" selected>2024</option>
+                    <option value="2022">2022</option>
+                    <option value="2020">2020</option>
+                    <option value="2018">2018</option>
+                    <option value="2016">2016</option>
+                    <option value="2014">2014</option>
+                    <option value="2012">2012</option>
+                    <option value="2010">2010</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="info-container">
+            <div id="previous-year-details" class="info-box">
+                <h2>Select a County</h2>
+                <div class="button-container">
+                    <button id="general-btn" class="toggle-button selected">General</button>
+                    <button id="primary-btn" class="toggle-button">Primary</button>
+                  </div>
+                
+            </div>
+            <div id="percent-change-details" class="info-box">
+                <h2>Select a County</h2>
+            </div>
+            <div id="current-year-details" class="info-box">
+                <h2>Select a County</h2>
+                <div class="button-container">
+                    <button id="general-btn" class="toggle-button selected">General</button>
+                    <button id="primary-btn" class="toggle-button">Primary</button>
+                  </div>
+                
+            </div>
+        </div>
+        <div>
+            <h2><br>Indiana Voter Turnout Maps</h2>
+            <p>These maps show the voter turnout for the general and primary elections in Indiana for the selected years. The darker the shade of green, the higher the voter turnout. Click on a county to see more information about the voter turnout for that county.</p>
+            <p>Source: <a href="https://indianavoters.in.gov/ENRHistorical/ElectionResults">Indiana Secretary of State</a></p>
+            <p>Questions? <a href="mailto:voterturnoutinfo@gmail.com">email us</a></p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
