@@ -8,10 +8,11 @@ let selectedCountyFIPS = null;
 // --- Helper function to get a single record from ICPSR data ---
 function getNationalRecord(fipsCode, year) {
     return icpsrData.find(record => 
-        String(record.STCOFIPS10).padStart(5, '0') === String(fipsCode) && 
+        String(record.STCOFIPS10).padStart(5, '0') === String(fipsCode).padStart(5, '0') && 
         String(record.YEAR) === String(year)
     );
 }
+
 
 function getTurnoutChanges(fipsCode, currentYear, previousYear) {
     const currentRecord = getNationalRecord(fipsCode, currentYear);
