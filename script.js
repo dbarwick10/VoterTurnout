@@ -7,9 +7,9 @@ let selectedCountyFIPS = null;
 
 // --- Helper function to get a single record from ICPSR data ---
 function getNationalRecord(fipsCode, year) {
-    return icpsrData.find(record => 
-        String(record.STCOFIPS10) === String(fipsCode) && 
-        String(record.YEAR) === String(year)
+    return nationalData.find(r =>
+        String(r.STCOFIPS10).padStart(5, '0') === fipsCode &&
+        String(r.YEAR) === String(year)
     );
 }
 
@@ -184,10 +184,10 @@ function displayCountyInfo(fipsCode) {
         &nbsp;&nbsp;• Voter Turnout (VAP): ${previousTurnout}<br>
         &nbsp;&nbsp;• Registered Voter Turnout: ${previousRegTurnout}</p>
         
-        <p><strong>Change (${previousYear} to ${currentYear}):</strong><br>
+        <p><strong>Change (${previousYear} to ${currentYear}):</strong>
+        &nbsp;&nbsp;• Percent Registered: ${regVotersPctChangeText}</p>
         &nbsp;&nbsp;• Voter Turnout (VAP): ${voterTurnoutChangeText}<br>
         &nbsp;&nbsp;• Registered Voter Turnout: ${regVoterTurnoutChangeText}<br>
-        &nbsp;&nbsp;• Percent Registered: ${regVotersPctChangeText}</p>
         <hr>
         <h3>Partisan Index (${currentYear})</h3>
         <p><strong>Partisan Index (Dem):</strong> ${currentRecord ? (currentRecord.PARTISAN_INDEX_DEM * 100).toFixed(2) + '%' : 'N/A'}</p>
