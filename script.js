@@ -176,14 +176,14 @@ function displayCountyInfo(fipsCode) {
         &nbsp;&nbsp;• Registered Voter Turnout: ${currentRegTurnout}</p>
         
         <p><strong>${previousYear}:</strong>
-        • Percent of Voting Age Registered: ${previousRegPct}<br>
-        • Voter Turnout (VAP): ${previousTurnout}<br>
-        • Registered Voter Turnout: ${previousRegTurnout}</p>
+        &nbsp;&nbsp;• Percent of Voting Age Registered: ${previousRegPct}<br>
+        &nbsp;&nbsp;• Voter Turnout (VAP): ${previousTurnout}<br>
+        &nbsp;&nbsp;• Registered Voter Turnout: ${previousRegTurnout}</p>
         
         <p><strong>Change (${previousYear} to ${currentYear}):</strong>
-        • Percent Registered: ${regVotersPctChangeText}</p>
-        • Voter Turnout (VAP): ${voterTurnoutChangeText}<br>
-        • Registered Voter Turnout: ${regVoterTurnoutChangeText}<br>
+        &nbsp;&nbsp;• Percent Registered: ${regVotersPctChangeText}</p>
+        &nbsp;&nbsp;• Voter Turnout (VAP): ${voterTurnoutChangeText}<br>
+        &nbsp;&nbsp;• Registered Voter Turnout: ${regVoterTurnoutChangeText}<br>
         <hr>
         <h3>Partisan Index (${currentYear})</h3>
         <p><strong>Partisan Index (Dem):</strong> ${currentRecord ? (currentRecord.PARTISAN_INDEX_DEM * 100).toFixed(2) + '%' : 'N/A'}</p>
@@ -206,7 +206,6 @@ function highlightCounty(fipsCode) {
 
 // Update map function
 function updateMap() {
-    const stateName = stateNames[stateFP] || 'Unknown';
     
     mainMap.eachLayer(layer => {
         if (layer instanceof L.GeoJSON) {
@@ -233,6 +232,7 @@ function updateMap() {
         },
         onEachFeature: function(feature, layer) {
             const fipsCode = feature.properties.STATEFP + feature.properties.COUNTYFP;
+            const stateName = stateNames[stateFP] || 'Unknown';
             const change = getTurnoutChange(fipsCode, currentYear, previousYear);
             const changeText = change !== null ? (change * 100).toFixed(2) + ' pp' : 'N/A'; // pp = percentage points
 
