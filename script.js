@@ -1,52 +1,45 @@
-let currentMap, previousMap, usaMap; // Added usaMap
-let voterData = []; // Original Indiana data
-let icpsrData = []; // New National ICPSR data
-let countyBoundariesIndiana; // Renamed for clarity
-let countyBoundariesUSA; // New variable for full US GeoJSON
+let currentMap, previousMap, usaMap; 
+let voterData = []; 
+let icpsrData = []; 
+let countyBoundariesIndiana; 
+let countyBoundariesUSA; 
 let selectedCounty = "Indiana"; 
 let selectedElectionTypeCurrent = "General"; 
 let selectedElectionTypePrevious = "General"; 
 
 // --- Helper function to get a simple turnout value from ICPSR data ---
 function getNationalTurnout(fipsCode, year) {
-    // FIPS code is a string like "01001"
     const record = icpsrData.find(record => 
         record.STCOFIPS10 == fipsCode && 
         record.YEAR == year
     );
     
-    // We will use the VOTER_TURNOUT_POP field, which is a decimal (e.g., 0.61)
     return record ? record.VOTER_TURNOUT_POP : null;
 }
 
 // --- Helper function to get color for national map (uses decimal turnout) ---
 function getNationalColor(turnoutDecimal) {
-    if (turnoutDecimal === null) return '#c0d8c1'; // Default for no data
+    if (turnoutDecimal === null) return '#c0d8c1'; 
     
-    // Convert decimal to percentage for easier comparison
     let turnoutPercent = turnoutDecimal * 100;
     
-    if (turnoutPercent >= 80) return '#173e19'; // Darkest green
-    if (turnoutPercent >= 70) return '#205723'; // Dark green
-    if (turnoutPercent >= 60) return '#29702d'; // Medium green
-    if (turnoutPercent >= 50) return '#428a46'; // Light green
-    if (turnoutPercent >= 40) return '#6ca46f'; // Lighter green
-    if (turnoutPercent >= 30) return '#96be98'; // Lightest green
-    return '#c0d8c1'; // Very light green
+    if (turnoutPercent >= 80) return '#173e19'; 
+    if (turnoutPercent >= 70) return '#205723'; 
+    if (turnoutPercent >= 60) return '#29702d'; 
+    if (turnoutPercent >= 50) return '#428a46'; 
+    if (turnoutPercent >= 40) return '#6ca46f'; 
+    if (turnoutPercent >= 30) return '#96be98'; 
+    return '#c0d8c1'; 
 }
 
 // Fetch all data
 async function fetchData() {
     try {
         const [voterResponse, icpsrResponse, indianaBoundariesResponse, usaBoundariesResponse] = await Promise.all([
-            // 1. Original Indiana data
-            fetch('voterdata.json'),
-            // 2. New national ICPSR data
-            fetch('voterturnoutdata-ICPSR.json'),
-            // 3. Indiana GeoJSON (for comparison maps)
-            fetch('indianaCounties.geojson'),
-            // 4. Full USA GeoJSON (for national map)
-            fetch('counties.geojson') 
+            fetch('../json/voterdata.json'),
+            fetch('../json/voterturnoutdata-ICPSR.json'),
+            fetch('../json/indianaCounties.geojson'),
+            fetch('../json/counties.geojson') 
         ]);
         
         voterData = await voterResponse.json();
@@ -94,7 +87,7 @@ function initMaps() {
         scrollWheelZoom: true,
         dragging: true,
         touchZoom: true,
-        doubleClickZoom: true,
+        doubleClickZoom: false, 
         boxZoom: true,
         keyboard: true
     });
@@ -344,18 +337,17 @@ function updateMap() {
     const previousYear = document.getElementById('previous-year').value;
 
     function addCountyBoundaries(map, year, electionType) {
-        L.geoJSON(countyBoundariesIndiana, {
+        L.geoJSON(countyBoundariesIndiana, { // Use Indiana GeoJSON
             style: function(feature) {
-                const currentName = feature.properties.name;
-                const isSelectedCounty = currentName === selectedCounty;
-                const countyData = getCountyData(year, currentName, electionType);
+                const countyName = feature.properties.name;
+                const countyData = getCountyData(year, countyName, electionType);
 
                 return {
                     fillColor: countyData ? getColor(countyData["Turnout (%)"]) : '#c0d8c1',
-                    weight: isSelectedCounty ? 3 : 1,
+                    weight: 1,
                     opacity: 1,
-                    color: isSelectedCounty ? '#ffff00' : 'white',
-                    fillOpacity: isSelectedCounty ? 0.9 : 0.7
+                    color: 'white',
+                    fillOpacity: 0.7
                 };
             },
             onEachFeature: function(feature, layer) {
