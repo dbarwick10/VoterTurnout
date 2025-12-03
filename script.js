@@ -1,34 +1,48 @@
-let usaMap; 
+let mainMap; 
 let icpsrData = []; 
 let countyBoundariesUSA; 
-let selectedCountyFIPS = null; // Use FIPS code for national map
+let selectedCountyFIPS = null; 
 
-// --- Helper function to get a simple turnout value from ICPSR data ---
-function getNationalTurnout(fipsCode, year) {
-    // The ICPSR data is for the whole US, so we only need the ICPSR data
-    const record = icpsrData.find(record => 
-        // Ensure both sides of the comparison are treated as strings
+// --- Helper function to get a single record from ICPSR data ---
+function getNationalRecord(fipsCode, year) {
+    return icpsrData.find(record => 
         String(record.STCOFIPS10) === String(fipsCode) && 
         String(record.YEAR) === String(year)
     );
-    
-    // We are using VOTER_TURNOUT_POP for the national map
-    return record ? record.VOTER_TURNOUT_POP : null;
 }
 
-// --- Helper function to get color for national map (uses decimal turnout) ---
-function getNationalColor(turnoutDecimal) {
-    if (turnoutDecimal === null) return '#c0d8c1'; 
-    
-    let turnoutPercent = turnoutDecimal * 100;
-    
-    if (turnoutPercent >= 80) return '#173e19'; 
-    if (turnoutPercent >= 70) return '#205723'; 
-    if (turnoutPercent >= 60) return '#29702d'; 
-    if (turnoutPercent >= 50) return '#428a46'; 
-    if (turnoutPercent >= 40) return '#6ca46f'; 
-    if (turnoutPercent >= 30) return '#96be98'; 
-    return '#c0d8c1'; 
+// --- Helper function to get the change in turnout between two years ---
+function getTurnoutChange(fipsCode, currentYear, previousYear) {
+    const currentRecord = getNationalRecord(fipsCode, currentYear);
+    const previousRecord = getNationalRecord(fipsCode, previousYear);
+
+    if (!currentRecord || !previousRecord) {
+        return null;
+    }
+
+    // VOTER_TURNOUT_POP is a decimal (e.g., 0.61)
+    const currentTurnout = currentRecord.VOTER_TURNOUT_POP;
+    const previousTurnout = previousRecord.VOTER_TURNOUT_POP;
+
+    // Return the change in percentage points (e.g., 0.61 - 0.59 = 0.02)
+    return currentTurnout - previousTurnout;
+}
+
+// --- Helper function to get color based on turnout change ---
+function getChangeColor(change) {
+    if (change === null) return '#c0d8c1'; // Default for no data
+
+    // Convert change to percentage points
+    const changePercent = change * 100;
+
+    // Green for increase, Red for decrease, White/Gray for no change
+    if (changePercent >= 5) return '#00441b'; // Strong Increase
+    if (changePercent >= 2) return '#238b45'; // Moderate Increase
+    if (changePercent >= 0.5) return '#a1d99b'; // Slight Increase
+    if (changePercent > -0.5) return '#f7f7f7'; // Near Zero Change
+    if (changePercent > -2) return '#fcae91'; // Slight Decrease
+    if (changePercent > -5) return '#de2d26'; // Moderate Decrease
+    return '#a50f15'; // Strong Decrease
 }
 
 // Fetch all data
@@ -45,7 +59,6 @@ async function fetchData() {
         countyBoundariesUSA = await usaBoundariesResponse.json();
 
         initMap();
-        displayCountyInfo(null); // Initial display with no county selected
 
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -55,7 +68,7 @@ async function fetchData() {
 // Initialize the map
 function initMap() {
     // --- 1. Initialize USA Map ---
-    usaMap = L.map('main-map', { // Renamed to 'main-map'
+    mainMap = L.map('main-map', { 
         center: [39.8, -98.5], // Center of the US
         zoom: 4,
         zoomControl: true,
@@ -69,43 +82,51 @@ function initMap() {
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(usaMap);
+    }).addTo(mainMap);
 
     // Initial draw of the map
     updateMap();
 
-    // Event listener for year selection
+    // Event listeners for year selection
     document.getElementById('current-year').addEventListener('change', updateMap);
+    document.getElementById('previous-year').addEventListener('change', updateMap);
 }
 
 // Display the county information in the info box
 function displayCountyInfo(fipsCode) {
-    const year = document.getElementById('current-year').value;
+    const currentYear = document.getElementById('current-year').value;
+    const previousYear = document.getElementById('previous-year').value;
     const infoDiv = document.getElementById('county-details');
     
     if (!fipsCode) {
         infoDiv.innerHTML = `<h2>Click a County for Details</h2>
-            <p>Turnout data is based on the Voting Age Population (VAP) from the ICPSR/NaNDA dataset.</p>`;
+            <p>Map shows the percentage point change in Voter Turnout (VAP) between the selected years.</p>`;
         return;
     }
 
-    const record = icpsrData.find(r => 
-        String(r.STCOFIPS10) === String(fipsCode) && 
-        String(r.YEAR) === String(year)
-    );
+    const currentRecord = getNationalRecord(fipsCode, currentYear);
+    const previousRecord = getNationalRecord(fipsCode, previousYear);
+    const change = getTurnoutChange(fipsCode, currentYear, previousYear);
 
-    const countyName = record ? record.COUNTY : 'N/A';
-    const stateName = record ? record.STATE : 'N/A';
-    const turnout = record ? (record.VOTER_TURNOUT_POP * 100).toFixed(2) + '%' : 'N/A';
-    const registeredVoters = record ? record.VOTER_REG_POP : 'N/A'; // VAP is used as proxy for Registered Voters in this dataset
+    const countyName = currentRecord ? currentRecord.COUNTY : 'N/A';
+    const stateName = currentRecord ? currentRecord.STATE : 'N/A';
+    
+    const currentTurnout = currentRecord ? (currentRecord.VOTER_TURNOUT_POP * 100).toFixed(2) + '%' : 'N/A';
+    const previousTurnout = previousRecord ? (previousRecord.VOTER_TURNOUT_POP * 100).toFixed(2) + '%' : 'N/A';
+    const changeText = change !== null ? (change * 100).toFixed(2) + ' percentage points' : 'N/A';
 
     infoDiv.innerHTML = `
-        <h2>${countyName} County, ${stateName} (${year})</h2>
+        <h2>${countyName} County, ${stateName}</h2>
         <p><strong>FIPS Code:</strong> ${fipsCode}</p>
-        <p><strong>Turnout (VAP):</strong> ${turnout}</p>
-        <p><strong>Voting Age Population (VAP):</strong> ${Intl.NumberFormat().format(registeredVoters)}</p>
-        <p><strong>Partisan Index (Dem):</strong> ${(record.PARTISAN_INDEX_DEM * 100).toFixed(2)}%</p>
-        <p><strong>Partisan Index (Rep):</strong> ${(record.PARTISAN_INDEX_REP * 100).toFixed(2)}%</p>
+        <hr>
+        <h3>Turnout Comparison</h3>
+        <p><strong>Turnout (${currentYear}):</strong> ${currentTurnout}</p>
+        <p><strong>Turnout (${previousYear}):</strong> ${previousTurnout}</p>
+        <p><strong>Change (${previousYear} to ${currentYear}):</strong> ${changeText}</p>
+        <hr>
+        <h3>Partisan Index (${currentYear})</h3>
+        <p><strong>Partisan Index (Dem):</strong> ${(currentRecord.PARTISAN_INDEX_DEM * 100).toFixed(2)}%</p>
+        <p><strong>Partisan Index (Rep):</strong> ${(currentRecord.PARTISAN_INDEX_REP * 100).toFixed(2)}%</p>
     `;
 }
 
@@ -125,22 +146,23 @@ function highlightCounty(fipsCode) {
 // Update map function
 function updateMap() {
     // Clear existing GeoJSON layer
-    usaMap.eachLayer(layer => {
+    mainMap.eachLayer(layer => {
         if (layer instanceof L.GeoJSON) {
-            usaMap.removeLayer(layer);
+            mainMap.removeLayer(layer);
         }
     });
 
-    const year = document.getElementById('current-year').value;
+    const currentYear = document.getElementById('current-year').value;
+    const previousYear = document.getElementById('previous-year').value;
 
     L.geoJSON(countyBoundariesUSA, {
         style: function(feature) {
             const fipsCode = feature.properties.STATEFP + feature.properties.COUNTYFP;
-            const nationalTurnout = getNationalTurnout(fipsCode, year); 
+            const change = getTurnoutChange(fipsCode, currentYear, previousYear); 
             const isSelected = fipsCode === selectedCountyFIPS;
 
             return {
-                fillColor: getNationalColor(nationalTurnout),
+                fillColor: getChangeColor(change),
                 weight: isSelected ? 3 : 0.5,
                 opacity: 1,
                 color: isSelected ? '#ffff00' : 'white',
@@ -149,18 +171,18 @@ function updateMap() {
         },
         onEachFeature: function(feature, layer) {
             const fipsCode = feature.properties.STATEFP + feature.properties.COUNTYFP;
-            const nationalTurnout = getNationalTurnout(fipsCode, year);
-            const turnoutText = nationalTurnout ? (nationalTurnout * 100).toFixed(1) + '%' : 'N/A';
+            const change = getTurnoutChange(fipsCode, currentYear, previousYear);
+            const changeText = change !== null ? (change * 100).toFixed(2) + ' pp' : 'N/A'; // pp = percentage points
 
             // Bind tooltip
-            layer.bindTooltip(`${feature.properties.NAME} County, ${feature.properties.LSAD}<br>Turnout (${year}): ${turnoutText}`);
+            layer.bindTooltip(`${feature.properties.NAME} County, ${feature.properties.LSAD}<br>Change (${previousYear} to ${currentYear}): ${changeText}`);
             
             // Add click handler
             layer.on('click', function() {
                 highlightCounty(fipsCode);
             });
         }
-    }).addTo(usaMap);
+    }).addTo(mainMap);
 }
 
 // Initial call to fetch data and start the application
