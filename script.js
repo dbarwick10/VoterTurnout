@@ -174,12 +174,12 @@ function displayCountyInfo(fipsCode) {
         <p><strong>FIPS Code:</strong> ${fipsCode}</p>
         <hr>
         <h3>Turnout Comparison</h3>
-        <p><strong>${currentYear}:</strong><br>
+        <p><strong>${currentYear}:</strong>
         &nbsp;&nbsp;• Percent of Voting Age Registered: ${currentRegPct}<br>
         &nbsp;&nbsp;• Voter Turnout (VAP): ${currentTurnout}<br>
         &nbsp;&nbsp;• Registered Voter Turnout: ${currentRegTurnout}</p>
         
-        <p><strong>${previousYear}:</strong><br>
+        <p><strong>${previousYear}:</strong>
         &nbsp;&nbsp;• Percent of Voting Age Registered: ${previousRegPct}<br>
         &nbsp;&nbsp;• Voter Turnout (VAP): ${previousTurnout}<br>
         &nbsp;&nbsp;• Registered Voter Turnout: ${previousRegTurnout}</p>
