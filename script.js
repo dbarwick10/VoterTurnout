@@ -206,7 +206,7 @@ function highlightCounty(fipsCode) {
 
 // Update map function
 function updateMap() {
-    
+
     mainMap.eachLayer(layer => {
         if (layer instanceof L.GeoJSON) {
             mainMap.removeLayer(layer);
@@ -232,14 +232,20 @@ function updateMap() {
         },
         onEachFeature: function(feature, layer) {
             const fipsCode = feature.properties.STATEFP + feature.properties.COUNTYFP;
-            const stateName = stateNames[stateFP] || 'Unknown';
-            const change = getTurnoutChange(fipsCode, currentYear, previousYear);
-            const changeText = change !== null ? (change * 100).toFixed(2) + ' pp' : 'N/A'; // pp = percentage points
 
-            // Bind tooltip
-            layer.bindTooltip(`${feature.properties.NAME} County, ${stateName}<br>Turnout Change (${previousYear} to ${currentYear}): ${changeText}`);
-            
-            // Add click handler
+            // ✅ CORRECT: get stateFP from the feature
+            const stateFP = feature.properties.STATEFP;
+            const stateName = stateNames[stateFP] || 'Unknown';
+
+            const change = getTurnoutChange(fipsCode, currentYear, previousYear);
+            const changeText = change !== null ? (change * 100).toFixed(2) + ' pp' : 'N/A';
+
+            // Tooltip with county and state
+            layer.bindTooltip(
+                `${feature.properties.NAME} County, ${stateName}<br>` +
+                `Turnout Change (${previousYear} to ${currentYear}): ${changeText}`
+            );
+
             layer.on('click', function() {
                 highlightCounty(fipsCode);
             });
