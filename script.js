@@ -22,9 +22,9 @@ function getTurnoutChange(fipsCode, currentYear, previousYear) {
         return null;
     }
 
-    // VOTER_TURNOUT_POP is a decimal (e.g., 0.61)
-    const currentTurnout = currentRecord.VOTER_TURNOUT_POP;
-    const previousTurnout = previousRecord.VOTER_TURNOUT_POP;
+    // VOTER_TURNOUT_PCT is a decimal (e.g., 0.61)
+    const currentTurnout = currentRecord.VOTER_TURNOUT_PCT;
+    const previousTurnout = previousRecord.VOTER_TURNOUT_PCT;
 
     // Return the change in percentage points (e.g., 0.61 - 0.59 = 0.02)
     return currentTurnout - previousTurnout;
