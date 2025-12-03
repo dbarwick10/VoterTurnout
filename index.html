@@ -5,34 +5,30 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQK9DK4VW7"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag( ){dataLayer.push(arguments);}
+  function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-ZQK9DK4VW7');
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USA and Indiana Voter Turnout Maps</title>
+    <title>USA County Voter Turnout Map</title>
     
+    <!-- Corrected CSS path for GitHub Pages -->
     <link rel="stylesheet" href="/VoterTurnout/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
-
 </head>
 <body>
     <div class="container">
-        <h1>USA and Indiana Voter Turnout Comparison</h1>
+        <h1>USA County Voter Turnout Map</h1>
 
-        <h2>USA County-Level Turnout (2022 )</h2>
-        <div id="usa-map" class="map-container" style="height: 600px; margin-bottom: 40px;">
-        
-        </div>
-
-        <h2>Indiana Voter Turnout Comparison</h2>
         <div class="map-container">
-            <div id="previous-year-map" class="map"></div>
+            <!-- The main map container is now for the USA map -->
+            <div id="main-map" class="map"></div>
+            
             <div class="legend">
-                <h3>Voter Turnout</h3>
-
+                <h3>Voter Turnout (VAP)</h3>
+                <!-- Legend items remain the same, but the data source is now VAP (Voting Age Population) -->
                 <div class="legend-item">
                     <div class="color-box" style="background-color: #173e19;"></div>
                     <span>> 80%</span>
@@ -61,33 +57,15 @@
                     <div class="color-box" style="background-color: #c0d8c1;"></div>
                     <span>under 30%</span>
                 </div>
-
             </div>
-            <div id="current-year-map" class="map"></div>
         </div>
 
         <div class="year-selectors">
+            <!-- We only need one year selector now, as there is no comparison -->
             <div>
-                <label for="previous-year">Previous Year:</label>
-                <select id="previous-year">
-                    <option value="2024">2024</option>
-                    <option value="2022" selected>2022</option>
-                    <option value="2020">2020</option>
-                    <option value="2018">2018</option>
-                    <option value="2016">2016</option>
-                    <option value="2014">2014</option>
-                    <option value="2012">2012</option>
-                    <option value="2010">2010</option>
-                </select>
-            </div>
-            <div class="instructions">Select a County for more info   
-
-            Click the same county again to go back to the State level</div>
-            <div>
-                <label for="current-year">Current Year:</label>
+                <label for="current-year">Select Year:</label>
                 <select id="current-year">
-                    <option value="2024" selected>2024</option>
-                    <option value="2022">2022</option>
+                    <option value="2022" selected>2022</option>
                     <option value="2020">2020</option>
                     <option value="2018">2018</option>
                     <option value="2016">2016</option>
@@ -98,32 +76,18 @@
             </div>
         </div>
         
+        <!-- The info container is now simplified to show only the selected county's data -->
         <div class="info-container">
-            <div id="previous-year-details" class="info-box">
-                <h2>Select a County</h2>
-                <div class="button-container">
-                    <button id="general-btn" class="toggle-button selected">General</button>
-                    <button id="primary-btn" class="toggle-button">Primary</button>
-                  </div>
-                
-            </div>
-            <div id="percent-change-details" class="info-box">
-                <h2>Select a County</h2>
-            </div>
-            <div id="current-year-details" class="info-box">
-                <h2>Select a County</h2>
-                <div class="button-container">
-                    <button id="general-btn" class="toggle-button selected">General</button>
-                    <button id="primary-btn" class="toggle-button">Primary</button>
-                  </div>
-                
+            <div id="county-details" class="info-box">
+                <h2>Click a County for Details</h2>
+                <p>Turnout data is based on the Voting Age Population (VAP) from the ICPSR/NaNDA dataset.</p>
             </div>
         </div>
+        
         <div>
-            <h2>  
-Indiana Voter Turnout Maps</h2>
-            <p>These maps show the voter turnout for the general and primary elections in Indiana for the selected years. The darker the shade of green, the higher the voter turnout. Click on a county to see more information about the voter turnout for that county.</p>
-            <p>Source: <a href="https://indianavoters.in.gov/ENRHistorical/ElectionResults">Indiana Secretary of State</a></p>
+            <h2>USA County Voter Turnout</h2>
+            <p>This map shows the voter turnout for counties across the United States for the selected year. The darker the shade of green, the higher the voter turnout based on the Voting Age Population (VAP).</p>
+            <p>Source: <a href="https://www.icpsr.umich.edu/web/NA/studies/37920">ICPSR/NaNDA: Voter Registration, Turnout, and Partisanship by County, United States</a></p>
             <p>Questions? <a href="mailto:voterturnoutinfo@gmail.com">email us</a></p>
         </div>
     </div>
