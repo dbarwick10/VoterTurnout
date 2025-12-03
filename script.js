@@ -138,7 +138,11 @@ function displayCountyInfo(fipsCode) {
     const stateName = stateNames[stateFP] || 'Unknown';
     
     const currentTurnout = currentRecord ? (currentRecord.VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
+    const currentRegTurnout = currentRecord ? (currentRecord.REG_VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
+    const currentRegPct = currentRecord ? (currentRecord.REG_VOTERS_PCT * 100).toFixed(2) + '%' : 'N/A';
     const previousTurnout = previousRecord ? (previousRecord.VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
+    const previousRegTurnout = previousRecord ? (previousRecord.REG_VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
+    const previousRegPct = previousRecord ? (previousRecord.REG_VOTERS_PCT * 100).toFixed(2) + '%' : 'N/A';
     const changeText = change !== null ? (change * 100).toFixed(2) + ' percentage points' : 'N/A';
 
     infoDiv.innerHTML = `
@@ -148,8 +152,8 @@ function displayCountyInfo(fipsCode) {
         <p><strong>FIPS Code:</strong> ${fipsCode}</p>
         <hr>
         <h3>Turnout Comparison</h3>
-        <p><strong>Turnout (${currentYear}):</strong> ${currentTurnout}</p>
-        <p><strong>Turnout (${previousYear}):</strong> ${previousTurnout}</p>
+        <p><strong>Turnout (${currentYear}):</strong> Percent of Voter age Registered to Vote: ${currentRegPct} Voter Turnout Percent: ${currentTurnout} Registered Voters Turnout Percent: ${currentRegTurnout}</p>
+        <p><strong>Turnout (${previousYear}):</strong> Percent of Voter age Registered to Vote: ${previousRegPct} Voter Turnout Percent: ${previousTurnout} Registered Voters Turnout Percent: ${previousRegTurnout}</p>
         <p><strong>Change (${previousYear} to ${currentYear}):</strong> ${changeText}</p>
         <hr>
         <h3>Partisan Index (${currentYear})</h3>
