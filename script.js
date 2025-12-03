@@ -165,10 +165,7 @@ function displayCountyInfo(fipsCode) {
 
     infoDiv.innerHTML = `
         <h2>${countyName} County, ${stateName}</h2>
-        <p><strong>State:</strong> ${stateName}</p>
-        <p><strong>County:</strong> ${countyName}</p>
-        <p><strong>FIPS Code:</strong> ${fipsCode}</p>
-        <hr>
+        
         <h3>Turnout Comparison</h3>
         <p><strong>${currentYear}:</strong>
         &nbsp;&nbsp;• Percent of Voting Age Registered: ${currentRegPct}<br>
