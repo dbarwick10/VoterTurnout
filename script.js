@@ -1,9 +1,22 @@
-console.log("Script loaded! Testing fetch paths...");
-
 let mainMap; 
 let icpsrData = []; 
 let countyBoundariesUSA; 
-let selectedCountyFIPS = null; 
+let selectedCountyFIPS = null;
+const stateNames = {
+        '01': 'Alabama', '02': 'Alaska', '04': 'Arizona', '05': 'Arkansas',
+        '06': 'California', '08': 'Colorado', '09': 'Connecticut', '10': 'Delaware',
+        '11': 'District of Columbia', '12': 'Florida', '13': 'Georgia', '15': 'Hawaii',
+        '16': 'Idaho', '17': 'Illinois', '18': 'Indiana', '19': 'Iowa',
+        '20': 'Kansas', '21': 'Kentucky', '22': 'Louisiana', '23': 'Maine',
+        '24': 'Maryland', '25': 'Massachusetts', '26': 'Michigan', '27': 'Minnesota',
+        '28': 'Mississippi', '29': 'Missouri', '30': 'Montana', '31': 'Nebraska',
+        '32': 'Nevada', '33': 'New Hampshire', '34': 'New Jersey', '35': 'New Mexico',
+        '36': 'New York', '37': 'North Carolina', '38': 'North Dakota', '39': 'Ohio',
+        '40': 'Oklahoma', '41': 'Oregon', '42': 'Pennsylvania', '44': 'Rhode Island',
+        '45': 'South Carolina', '46': 'South Dakota', '47': 'Tennessee', '48': 'Texas',
+        '49': 'Utah', '50': 'Vermont', '51': 'Virginia', '53': 'Washington',
+        '54': 'West Virginia', '55': 'Wisconsin', '56': 'Wyoming', '72': 'Puerto Rico'
+    }; 
 
 // --- Helper function to get a single record from ICPSR data ---
 function getNationalRecord(fipsCode, year) {
@@ -12,7 +25,6 @@ function getNationalRecord(fipsCode, year) {
         String(record.YEAR) === String(year)
     );
 }
-
 
 function getTurnoutChanges(fipsCode, currentYear, previousYear) {
     const currentRecord = getNationalRecord(fipsCode, currentYear);
@@ -137,23 +149,6 @@ function displayCountyInfo(fipsCode) {
     const countyName = countyFeature ? countyFeature.properties.NAME : 'Unknown';
     const stateFP = fipsCode.substring(0, 2); // First 2 digits are state FIPS
     
-    // State FIPS to name mapping
-    const stateNames = {
-        '01': 'Alabama', '02': 'Alaska', '04': 'Arizona', '05': 'Arkansas',
-        '06': 'California', '08': 'Colorado', '09': 'Connecticut', '10': 'Delaware',
-        '11': 'District of Columbia', '12': 'Florida', '13': 'Georgia', '15': 'Hawaii',
-        '16': 'Idaho', '17': 'Illinois', '18': 'Indiana', '19': 'Iowa',
-        '20': 'Kansas', '21': 'Kentucky', '22': 'Louisiana', '23': 'Maine',
-        '24': 'Maryland', '25': 'Massachusetts', '26': 'Michigan', '27': 'Minnesota',
-        '28': 'Mississippi', '29': 'Missouri', '30': 'Montana', '31': 'Nebraska',
-        '32': 'Nevada', '33': 'New Hampshire', '34': 'New Jersey', '35': 'New Mexico',
-        '36': 'New York', '37': 'North Carolina', '38': 'North Dakota', '39': 'Ohio',
-        '40': 'Oklahoma', '41': 'Oregon', '42': 'Pennsylvania', '44': 'Rhode Island',
-        '45': 'South Carolina', '46': 'South Dakota', '47': 'Tennessee', '48': 'Texas',
-        '49': 'Utah', '50': 'Vermont', '51': 'Virginia', '53': 'Washington',
-        '54': 'West Virginia', '55': 'Wisconsin', '56': 'Wyoming', '72': 'Puerto Rico'
-    };
-    
     const stateName = stateNames[stateFP] || 'Unknown';
     
     const currentTurnout = currentRecord ? (currentRecord.VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
@@ -211,7 +206,8 @@ function highlightCounty(fipsCode) {
 
 // Update map function
 function updateMap() {
-    // Clear existing GeoJSON layer
+    const stateName = stateNames[stateFP] || 'Unknown';
+    
     mainMap.eachLayer(layer => {
         if (layer instanceof L.GeoJSON) {
             mainMap.removeLayer(layer);
@@ -241,7 +237,7 @@ function updateMap() {
             const changeText = change !== null ? (change * 100).toFixed(2) + ' pp' : 'N/A'; // pp = percentage points
 
             // Bind tooltip
-            layer.bindTooltip(`${feature.properties.NAME} County, ${feature.properties.LSAD}<br>Change (${previousYear} to ${currentYear}): ${changeText}`);
+            layer.bindTooltip(`${feature.properties.NAME} County, ${stateName}<br>Turnout Change (${previousYear} to ${currentYear}): ${changeText}`);
             
             // Add click handler
             layer.on('click', function() {
