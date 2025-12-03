@@ -1,3 +1,5 @@
+console.log("Script loaded! Testing fetch paths...");
+
 let mainMap; 
 let icpsrData = []; 
 let countyBoundariesUSA; 
