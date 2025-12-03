@@ -167,22 +167,24 @@ function displayCountyInfo(fipsCode) {
         <h2>${countyName} County, ${stateName}</h2>
         
         <h3>Turnout Comparison</h3>
-        <p><strong>${currentYear}:</strong>
-        &nbsp;&nbsp;• Percent of Voting Age Registered: ${currentRegPct}<br>
-        &nbsp;&nbsp;• Voter Turnout (VAP): ${currentTurnout}<br>
-        &nbsp;&nbsp;• Registered Voter Turnout: ${currentRegTurnout}</p>
-        
+        <br>
+
         <p><strong>${previousYear}:</strong>
         &nbsp;&nbsp;• Percent of Voting Age Registered: ${previousRegPct}<br>
         &nbsp;&nbsp;• Voter Turnout (VAP): ${previousTurnout}<br>
         &nbsp;&nbsp;• Registered Voter Turnout: ${previousRegTurnout}</p>
+
+        <p><strong>${currentYear}:</strong>
+        &nbsp;&nbsp;• Percent of Voting Age Registered: ${currentRegPct}<br>
+        &nbsp;&nbsp;• Voter Turnout (VAP): ${currentTurnout}<br>
+        &nbsp;&nbsp;• Registered Voter Turnout: ${currentRegTurnout}</p>
         
         <p><strong>Change (${previousYear} to ${currentYear}):</strong>
         &nbsp;&nbsp;• Percent Registered: ${regVotersPctChangeText}<br>
         &nbsp;&nbsp;• Voter Turnout (VAP): ${voterTurnoutChangeText}<br>
         &nbsp;&nbsp;• Registered Voter Turnout: ${regVoterTurnoutChangeText}</p>
         <br>
-        <hr>
+
         <h3>Partisan Index (${currentYear})</h3>
         <p><strong>Partisan Index (Dem):</strong> ${currentRecord ? (currentRecord.PARTISAN_INDEX_DEM * 100).toFixed(2) + '%' : 'N/A'}</p>
         <p><strong>Partisan Index (Rep):</strong> ${currentRecord ? (currentRecord.PARTISAN_INDEX_REP * 100).toFixed(2) + '%' : 'N/A'}</p>
