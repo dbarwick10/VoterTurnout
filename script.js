@@ -13,7 +13,26 @@ function getNationalRecord(fipsCode, year) {
     );
 }
 
-// --- Helper function to get the change in turnout between two years ---
+function getTurnoutChanges(fipsCode, currentYear, previousYear) {
+    const currentRecord = getNationalRecord(fipsCode, currentYear);
+    const previousRecord = getNationalRecord(fipsCode, previousYear);
+
+    if (!currentRecord || !previousRecord) {
+        return null;
+    }
+
+    // Calculate changes for all three metrics
+    const voterTurnoutChange = currentRecord.VOTER_TURNOUT_PCT - previousRecord.VOTER_TURNOUT_PCT;
+    const regVoterTurnoutChange = currentRecord.REG_VOTER_TURNOUT_PCT - previousRecord.REG_VOTER_TURNOUT_PCT;
+    const regVotersPctChange = currentRecord.REG_VOTERS_PCT - previousRecord.REG_VOTERS_PCT;
+
+    return {
+        voterTurnout: voterTurnoutChange,
+        regVoterTurnout: regVoterTurnoutChange,
+        regVotersPct: regVotersPctChange
+    };
+}
+
 function getTurnoutChange(fipsCode, currentYear, previousYear) {
     const currentRecord = getNationalRecord(fipsCode, currentYear);
     const previousRecord = getNationalRecord(fipsCode, previousYear);
@@ -94,7 +113,6 @@ function initMap() {
     document.getElementById('previous-year').addEventListener('change', updateMap);
 }
 
-// Display the county information in the info box
 function displayCountyInfo(fipsCode) {
     const currentYear = document.getElementById('current-year').value;
     const previousYear = document.getElementById('previous-year').value;
@@ -108,7 +126,7 @@ function displayCountyInfo(fipsCode) {
 
     const currentRecord = getNationalRecord(fipsCode, currentYear);
     const previousRecord = getNationalRecord(fipsCode, previousYear);
-    const change = getTurnoutChange(fipsCode, currentYear, previousYear);
+    const changes = getTurnoutChanges(fipsCode, currentYear, previousYear);
 
     // Get county and state names from GeoJSON
     const countyFeature = countyBoundariesUSA.features.find(f => 
@@ -143,7 +161,11 @@ function displayCountyInfo(fipsCode) {
     const previousTurnout = previousRecord ? (previousRecord.VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
     const previousRegTurnout = previousRecord ? (previousRecord.REG_VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
     const previousRegPct = previousRecord ? (previousRecord.REG_VOTERS_PCT * 100).toFixed(2) + '%' : 'N/A';
-    const changeText = change !== null ? (change * 100).toFixed(2) + ' percentage points' : 'N/A';
+    
+    // Format changes
+    const voterTurnoutChangeText = changes ? (changes.voterTurnout * 100).toFixed(2) + ' pp' : 'N/A';
+    const regVoterTurnoutChangeText = changes ? (changes.regVoterTurnout * 100).toFixed(2) + ' pp' : 'N/A';
+    const regVotersPctChangeText = changes ? (changes.regVotersPct * 100).toFixed(2) + ' pp' : 'N/A';
 
     infoDiv.innerHTML = `
         <h2>${countyName} County, ${stateName}</h2>
@@ -152,9 +174,20 @@ function displayCountyInfo(fipsCode) {
         <p><strong>FIPS Code:</strong> ${fipsCode}</p>
         <hr>
         <h3>Turnout Comparison</h3>
-        <p><strong>Turnout (${currentYear}):</strong> Percent of Voter age Registered to Vote: ${currentRegPct} Voter Turnout Percent: ${currentTurnout} Registered Voters Turnout Percent: ${currentRegTurnout}</p>
-        <p><strong>Turnout (${previousYear}):</strong> Percent of Voter age Registered to Vote: ${previousRegPct} Voter Turnout Percent: ${previousTurnout} Registered Voters Turnout Percent: ${previousRegTurnout}</p>
-        <p><strong>Change (${previousYear} to ${currentYear}):</strong> ${changeText}</p>
+        <p><strong>${currentYear}:</strong><br>
+        &nbsp;&nbsp;• Percent of Voting Age Registered: ${currentRegPct}<br>
+        &nbsp;&nbsp;• Voter Turnout (VAP): ${currentTurnout}<br>
+        &nbsp;&nbsp;• Registered Voter Turnout: ${currentRegTurnout}</p>
+        
+        <p><strong>${previousYear}:</strong><br>
+        &nbsp;&nbsp;• Percent of Voting Age Registered: ${previousRegPct}<br>
+        &nbsp;&nbsp;• Voter Turnout (VAP): ${previousTurnout}<br>
+        &nbsp;&nbsp;• Registered Voter Turnout: ${previousRegTurnout}</p>
+        
+        <p><strong>Change (${previousYear} to ${currentYear}):</strong><br>
+        &nbsp;&nbsp;• Voter Turnout (VAP): ${voterTurnoutChangeText}<br>
+        &nbsp;&nbsp;• Registered Voter Turnout: ${regVoterTurnoutChangeText}<br>
+        &nbsp;&nbsp;• Percent Registered: ${regVotersPctChangeText}</p>
         <hr>
         <h3>Partisan Index (${currentYear})</h3>
         <p><strong>Partisan Index (Dem):</strong> ${currentRecord ? (currentRecord.PARTISAN_INDEX_DEM * 100).toFixed(2) + '%' : 'N/A'}</p>
