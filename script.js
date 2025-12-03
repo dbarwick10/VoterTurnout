@@ -110,8 +110,32 @@ function displayCountyInfo(fipsCode) {
     const previousRecord = getNationalRecord(fipsCode, previousYear);
     const change = getTurnoutChange(fipsCode, currentYear, previousYear);
 
-    const countyName = currentRecord ? currentRecord.COUNTY : 'N/A';
-    const stateName = currentRecord ? currentRecord.STATE : 'N/A';
+    // Get county and state names from GeoJSON
+    const countyFeature = countyBoundariesUSA.features.find(f => 
+        (f.properties.STATEFP + f.properties.COUNTYFP) === fipsCode
+    );
+    
+    const countyName = countyFeature ? countyFeature.properties.NAME : 'Unknown';
+    const stateFP = fipsCode.substring(0, 2); // First 2 digits are state FIPS
+    
+    // State FIPS to name mapping
+    const stateNames = {
+        '01': 'Alabama', '02': 'Alaska', '04': 'Arizona', '05': 'Arkansas',
+        '06': 'California', '08': 'Colorado', '09': 'Connecticut', '10': 'Delaware',
+        '11': 'District of Columbia', '12': 'Florida', '13': 'Georgia', '15': 'Hawaii',
+        '16': 'Idaho', '17': 'Illinois', '18': 'Indiana', '19': 'Iowa',
+        '20': 'Kansas', '21': 'Kentucky', '22': 'Louisiana', '23': 'Maine',
+        '24': 'Maryland', '25': 'Massachusetts', '26': 'Michigan', '27': 'Minnesota',
+        '28': 'Mississippi', '29': 'Missouri', '30': 'Montana', '31': 'Nebraska',
+        '32': 'Nevada', '33': 'New Hampshire', '34': 'New Jersey', '35': 'New Mexico',
+        '36': 'New York', '37': 'North Carolina', '38': 'North Dakota', '39': 'Ohio',
+        '40': 'Oklahoma', '41': 'Oregon', '42': 'Pennsylvania', '44': 'Rhode Island',
+        '45': 'South Carolina', '46': 'South Dakota', '47': 'Tennessee', '48': 'Texas',
+        '49': 'Utah', '50': 'Vermont', '51': 'Virginia', '53': 'Washington',
+        '54': 'West Virginia', '55': 'Wisconsin', '56': 'Wyoming', '72': 'Puerto Rico'
+    };
+    
+    const stateName = stateNames[stateFP] || 'Unknown';
     
     const currentTurnout = currentRecord ? (currentRecord.VOTER_TURNOUT_POP * 100).toFixed(2) + '%' : 'N/A';
     const previousTurnout = previousRecord ? (previousRecord.VOTER_TURNOUT_POP * 100).toFixed(2) + '%' : 'N/A';
@@ -119,6 +143,8 @@ function displayCountyInfo(fipsCode) {
 
     infoDiv.innerHTML = `
         <h2>${countyName} County, ${stateName}</h2>
+        <p><strong>State:</strong> ${stateName}</p>
+        <p><strong>County:</strong> ${countyName}</p>
         <p><strong>FIPS Code:</strong> ${fipsCode}</p>
         <hr>
         <h3>Turnout Comparison</h3>
@@ -127,8 +153,8 @@ function displayCountyInfo(fipsCode) {
         <p><strong>Change (${previousYear} to ${currentYear}):</strong> ${changeText}</p>
         <hr>
         <h3>Partisan Index (${currentYear})</h3>
-        <p><strong>Partisan Index (Dem):</strong> ${(currentRecord.PARTISAN_INDEX_DEM * 100).toFixed(2)}%</p>
-        <p><strong>Partisan Index (Rep):</strong> ${(currentRecord.PARTISAN_INDEX_REP * 100).toFixed(2)}%</p>
+        <p><strong>Partisan Index (Dem):</strong> ${currentRecord ? (currentRecord.PARTISAN_INDEX_DEM * 100).toFixed(2) + '%' : 'N/A'}</p>
+        <p><strong>Partisan Index (Rep):</strong> ${currentRecord ? (currentRecord.PARTISAN_INDEX_REP * 100).toFixed(2) + '%' : 'N/A'}</p>
     `;
 }
 
