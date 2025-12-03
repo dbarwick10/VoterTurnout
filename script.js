@@ -137,8 +137,8 @@ function displayCountyInfo(fipsCode) {
     
     const stateName = stateNames[stateFP] || 'Unknown';
     
-    const currentTurnout = currentRecord ? (currentRecord.VOTER_TURNOUT_POP * 100).toFixed(2) + '%' : 'N/A';
-    const previousTurnout = previousRecord ? (previousRecord.VOTER_TURNOUT_POP * 100).toFixed(2) + '%' : 'N/A';
+    const currentTurnout = currentRecord ? (currentRecord.VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
+    const previousTurnout = previousRecord ? (previousRecord.VOTER_TURNOUT_PCT * 100).toFixed(2) + '%' : 'N/A';
     const changeText = change !== null ? (change * 100).toFixed(2) + ' percentage points' : 'N/A';
 
     infoDiv.innerHTML = `
